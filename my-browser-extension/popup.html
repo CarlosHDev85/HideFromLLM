@@ -1,0 +1,30 @@
+<!-- filepath: /home/carlos/BrowserExtensions/HideFromLLM/my-browser-extension/popup.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>On/Off Popup</title>
+    <script src="popup.js" defer></script>
+    <style>
+        body { width: 150px; text-align: center; }
+        #toggleButton {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            color: white;
+            border-radius: 5px;
+        }
+        #toggleButton.off {
+            background-color: red;
+        }
+        #toggleButton.on {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <h1>Extension State</h1>
+    <button id="toggleButton" class="off">OFF</button>
+</body>
+</html>
