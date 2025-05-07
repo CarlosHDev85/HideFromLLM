@@ -46,53 +46,7 @@ chrome.runtime.onMessage.addListener((message) => {
   }
 });
 
-function handleInput(event) {
-  if (!isOn) return;
 
-  const activeElement = event.target;
-  let value, selectionStart, selectionEnd;
-
-  if (
-    activeElement &&
-    (activeElement.tagName === 'TEXTAREA' ||
-      (activeElement.tagName === 'INPUT' && activeElement.type === 'text'))
-  ) {
-    value = activeElement.value;
-    selectionStart = activeElement.selectionStart;
-    selectionEnd = activeElement.selectionEnd;
-  } else if (activeElement && activeElement.isContentEditable) {
-    value = activeElement.innerText;
-    // For contenteditable, selection handling is more complex and can be added if needed
-  } else {
-    return;
-  }
-
-  let changed = false;
-  let newValue = value.replace(emailRegex, (match) => {
-    if (!mapping.emails[match]) {
-      mapping.emailCount += 1;
-      mapping.emails[match] = fakeEmailTemplate(mapping.emailCount);
-      console.log(`[Input] New email mapping: ${match} -> ${mapping.emails[match]}`);
-      changed = true;
-    }
-    return mapping.emails[match];
-  });
-
-  if (changed && newValue !== value) {
-    console.log(`[Input] Replacing email in input:`, value, '=>', newValue);
-    if (activeElement.value !== undefined) {
-      activeElement.value = newValue;
-      // Try to restore cursor position if possible
-      if (typeof selectionStart === 'number') {
-        activeElement.selectionStart = activeElement.selectionEnd = selectionStart;
-      }
-      activeElement.dispatchEvent(new Event('input', { bubbles: true }));
-    } else if (activeElement.isContentEditable) {
-      activeElement.innerText = newValue;
-    }
-    saveMapping();
-  }
-}
 
 // Save mapping to storage
 function saveMapping() {
@@ -189,5 +143,4 @@ function handleCopy(event) {
 // Register event listeners
 window.addEventListener('paste', handlePaste, true);
 window.addEventListener('copy', handleCopy, true);
-window.addEventListener('input', handleInput, true);
 
