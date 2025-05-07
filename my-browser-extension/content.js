@@ -34,6 +34,18 @@ chrome.storage.local.get('mapping', (result) => {
   }
 });
 
+chrome.runtime.onMessage.addListener((message) => {
+  if (message.newState !== undefined) {
+    isOn = message.newState;
+    console.log('Content: state updated to', isOn ? 'ON' : 'OFF');
+  }
+  if (message.action === 'resetMapping') {
+    mapping = { emails: {}, numbers: {}, emailCount: 0, phoneCount: 0 };
+    saveMapping();
+    console.log('Content: mapping has been reset');
+  }
+});
+
 function handleInput(event) {
   if (!isOn) return;
 

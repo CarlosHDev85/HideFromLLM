@@ -44,3 +44,10 @@ toggleButton.addEventListener('click', () => {
     // Send a message to the background script with the new state
     chrome.runtime.sendMessage({ newState: isOn });
 });
+
+document.getElementById('reset-mapping-btn').addEventListener('click', () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+      chrome.tabs.sendMessage(tabs[0].id, { action: 'resetMapping' });
+    });
+    console.log('Reset mapping button clicked');
+});
